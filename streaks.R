@@ -1,5 +1,6 @@
 
 
+
 streak_stats <- function(x, n, ID){
   
   
@@ -12,19 +13,15 @@ streak_stats <- function(x, n, ID){
   grp <- with(rle(y), rep(seq_along(values), lengths))
   max_length_incorrect_streak <- max(ave(y, grp, FUN = seq_along)*y)
   
-  # average length of incorrect responses
+  # average length of incorrect/correct responses
   z1 <- unlist(rle(x)[1])
   z2 <- unlist(rle(x)[2])
   z <- as.data.frame(cbind(z1,z2))
-  ave_length_incorrect_streak <- aggregate(z$z1 ~ z$z2, z, mean)[z$z2 == "0","z$z1"][1]
+  ave_length_incorrect_streak <- mean(z[z2== 0, "z1"])
+  ave_length_correct_streak <- mean(z[z2== 1, "z1"])
   
   
-  # average length of correct responses
-  z1 <- unlist(rle(x)[1])
-  z2 <- unlist(rle(x)[2])
-  z <- as.data.frame(cbind(z1,z2))
-  ave_length_correct_streak <- aggregate(z$z1 ~ z$z2, z, mean)[z$z2 == "1","z$z1"][1]
-  
+
   
   # Total number of runs
   total_no_runs <- nrow(z)
